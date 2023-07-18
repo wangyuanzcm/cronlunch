@@ -13314,14 +13314,14 @@ function tranform_default(data2) {
   const $recordsfound = esm_default2.load(recordsfound);
   const total = $recordsfound("strong").text();
   const $2 = esm_default2.load(`<table>${layout}</table>`);
-  const timeStamp = new Date().getTime();
+  const created_time = new Date().getTime();
   const list = $2("tr").map((i, $tr) => {
     const $tds = $tr.children;
     const [_, TokenName, Symbol2, Quantity, TokenPrice, Change24h, ValueIInBNB, ValueInUSD] = $tds;
     const _TokenName = $2(TokenName).find(".media-body a span").attr("title") || $2(TokenName).find(".media-body a.font-weight-bold").text();
     const _TokenHash = $2(TokenName).find(".media-body a.d-block").attr("title");
     return {
-      timeStamp,
+      created_time,
       totaleth,
       totalusd,
       total,
@@ -13338,6 +13338,28 @@ function tranform_default(data2) {
   }).toArray();
   console.log(list, "list");
   return list;
+}
+
+// src/setIssue.ts
+async function setIssue_default(data2) {
+  const owner = "wangyuanzcm";
+  const repo = "cronlunch";
+  const issueNumber = 2;
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer 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");
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("User-Agent", "my-app/1.0.0");
+  const raw = JSON.stringify({ body: JSON.stringify(data2) });
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+  };
+  const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`, requestOptions);
+  const result = await response.text();
+  console.log(result);
+  return true;
 }
 
 // src/worker.ts
@@ -13365,10 +13387,14 @@ var worker_default = {
     };
     const response = await fetch("https://bscscan.com/tokenholdingsHandler.aspx?&a=0x0f0067cd819cb8f20bda62046daff7a2b5c88280&q=&p=1&f=0&h=1&sort=total_price_usd&order=desc&pUsd24hrs=244&pBtc24hrs=0.00805928728815882&pUsd=239.91&fav=&langMsg=A%20total%20of%20XX%20tokenSS%20found&langFilter=Filtered%20by%20XX&langFirst=First&langPage=Page%20X%20of%20Y&langLast=Last&ps=100", requestOptions);
     const result = await response.text();
-    console.log(result, "result");
-    const data2 = JSON.parse(result);
-    console.log(tranform_default(data2));
-    return new Response("success");
+    try {
+      const data2 = JSON.parse(result);
+      const storeData = tranform_default(data2);
+      await setIssue_default(storeData);
+      return new Response("success");
+    } catch (err) {
+      return new Response(err.message);
+    }
   }
 };
 export {

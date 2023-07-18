@@ -9,7 +9,7 @@
  */
 
 import tranform from "./tranform";
-
+import setIssue from "./setIssue";
 // Export a default object containing event handlers
 export default {
   // The fetch handler is invoked when this worker receives a HTTP(S) request
@@ -40,8 +40,10 @@ export default {
     const response = await fetch("https://bscscan.com/tokenholdingsHandler.aspx?&a=0x0f0067cd819cb8f20bda62046daff7a2b5c88280&q=&p=1&f=0&h=1&sort=total_price_usd&order=desc&pUsd24hrs=244&pBtc24hrs=0.00805928728815882&pUsd=239.91&fav=&langMsg=A%20total%20of%20XX%20tokenSS%20found&langFilter=Filtered%20by%20XX&langFirst=First&langPage=Page%20X%20of%20Y&langLast=Last&ps=100", requestOptions)
     const result = await response.text();
     try{
-      const data = JSON.parse(result);  
-      console.log(tranform(data))
+      const data = JSON.parse(result); 
+      const storeData =  tranform(data)
+      // console.log(tranform(data))
+      await setIssue(storeData);
       return new Response('success');
 
     }catch(err){
