@@ -1,0 +1,8 @@
+name = "cronlunch"
+main = "src/index.ts"
+compatibility_date = "2023-07-18"
+usage_model = "unbound"
+env = { }
+
+[triggers]
+crons = [ ]
