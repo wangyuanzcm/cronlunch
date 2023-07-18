@@ -1,0 +1,1 @@
+This folder contains the built output assets for the worker "cronlunch" generated at 2023-07-18T16:32:15.945Z.
