@@ -1,14 +1,31 @@
 import cheerio from 'cheerio';
 const prefixUrl = 'https://bscscan.com';
 
-interface transformType {
+interface TransformType {
 	totaleth: string;
 	totalusd: string;
 	recordsfound: string;
 	layout: string;
-    usdpercentagechange:string;
+	usdpercentagechange: string;
 }
-export default function (data: transformType) {
+
+export interface StoreType {
+	created_time: number;
+	totaleth: string;
+	totalusd: string;
+	total: string;
+	pic: string;
+	TokenName: string;
+	TokenHash: string | undefined;
+	Symbol: string;
+	Quantity: string;
+	TokenPrice: string;
+	Change24h: string;
+	ValueIInBNB: string;
+	ValueInUSD: string;
+}
+
+export default function (data: TransformType): StoreType[] {
 	const { totaleth, totalusd, recordsfound, layout } = data;
 	const $recordsfound = cheerio.load(recordsfound);
 	// 当前的token总数

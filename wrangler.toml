@@ -5,4 +5,4 @@ usage_model = "unbound"
 env = { }
 
 [triggers]
-crons = [ ]
+crons = [ "0 */1 * * *	"]
