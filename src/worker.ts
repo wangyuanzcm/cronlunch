@@ -59,7 +59,7 @@ export default {
 			const storeData = tranform(data);
 			// console.log(tranform(data))
 			await setIssue(env, storeData);
-		  return new Response(storeData, {
+		  return new Response(JSON.stringify(storeData), {
 		    headers: { 'Content-Type': 'application/json' },
 		  })
 		} catch (err) {
