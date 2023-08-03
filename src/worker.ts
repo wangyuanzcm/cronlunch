@@ -59,9 +59,13 @@ export default {
 			const storeData = tranform(data);
 			// console.log(tranform(data))
 			await setIssue(env, storeData);
-		  return new Response(JSON.stringify(storeData), {
-		    headers: { 'Content-Type': 'application/json' },
-		  })
+			return new Response(JSON.stringify(storeData), {
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Headers': 'accept'
+				},
+			});
 		} catch (err) {
 			return new Response(err.message);
 		}

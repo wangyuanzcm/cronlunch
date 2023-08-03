@@ -13401,7 +13401,13 @@ var worker_default = {
       const data2 = JSON.parse(result);
       const storeData = tranform_default(data2);
       await setIssue_default(env, storeData);
-      return new Response("success");
+      return new Response(JSON.stringify(storeData), {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "accept"
+        }
+      });
     } catch (err) {
       return new Response(err.message);
     }
